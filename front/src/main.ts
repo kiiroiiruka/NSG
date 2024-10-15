@@ -130,12 +130,7 @@ class MyGame extends Phaser.Scene
     }
     if (this.map) this.map.moveTiles(offsetX, offsetY); // マップを移動させる
 
-    if (this.p5Image)
-    {
-      const p5PosX = this.p5Image.x; // p5ImageのX座標
-      const p5PosY = this.p5Image.y; // p5ImageのY座標
-      // ここでコンソールに出力する
-    }
+
   }
 }
 
