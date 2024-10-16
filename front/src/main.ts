@@ -283,7 +283,7 @@ class MyGame extends Phaser.Scene
       this.button_text["ITEM"].destroy();
       this.button_text["SAVE"].destroy();
       this.button_text["PLACE"].destroy();
-      this.button_text["ゲームに戻る"].destroy();
+      this.button_text["もどる"].destroy();
       if(this.stop_make_button_text==0)
       {
         this.stop_make_button_text=1;
@@ -311,7 +311,7 @@ class MyGame extends Phaser.Scene
           this.more_draw_button(700, 100, 'ITEM',150,50,'32px');//ITEMボタンのテキスト表示
           this.more_draw_button(700, 200, 'SAVE',150,50,'32px');
           this.more_draw_button(700, 300, 'PLACE',150,50,'32px');
-          this.more_draw_button(10, 400, 'ゲームに戻る',150,50,'22px');
+          this.more_draw_button(10, 400, 'もどる',150,50,'32px');
         }
         
         this.button_text["↑"].destroy();
