@@ -59,6 +59,8 @@ class MyGame extends Phaser.Scene
   private image_item!:Phaser.GameObjects.Image; // アイテム欄の画像
   private image_save!:Phaser.GameObjects.Image; // セーブ画面の表示
   private image_place!:Phaser.GameObjects.Image; // セーブ画面の表示
+  private image_mene2!:Phaser.GameObjects.Image; // セーブ画面の表示
+
 
   private button_move_up!:Phaser.GameObjects.Graphics;//UPボタン入ったやつ
   private button_move_down!:Phaser.GameObjects.Graphics;//DOWNボタン入ったやつ
@@ -88,6 +90,7 @@ class MyGame extends Phaser.Scene
     this.load.image('item', 'src/assets/Item.png');
     this.load.image('save', 'src/assets/save.png');
     this.load.image('place', 'src/assets/place.jpg');
+    this.load.image('mene2', 'src/assets/mene2.jpg');
   }
 
   create() 
@@ -99,8 +102,9 @@ class MyGame extends Phaser.Scene
     this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'player');  
     this.image_mene=this.add.image(0, 0, 'mene'); //menu追加
     this.image_item=this.add.image(0, 0, 'item'); //item追加
-    this.image_save=this.add.image(0, 0, 'save'); //menu追加
-    this.image_place=this.add.image(0, 0, 'place'); //item追加
+    this.image_save=this.add.image(0, 0, 'save'); 
+    this.image_place=this.add.image(0, 0, 'place'); 
+    this.image_mene2=this.add.image(0, 0, 'mene2'); 
     // マウスやタッチ入力の設定
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => 
     {
@@ -224,6 +228,7 @@ class MyGame extends Phaser.Scene
   {
     if(this.movemene_stop==1)
     {
+      this.image_mene2.setVisible(false);//メニュー画面非表示
       this.image_item.setVisible(true);//ITEM画面表示
       this.image_save.setVisible(false);//SAVE画面非表示
       this.image_place.setVisible(false);//PLACE画面非表示
@@ -233,6 +238,7 @@ class MyGame extends Phaser.Scene
   {
     if(this.movemene_stop==4)
     {
+      this.image_mene2.setVisible(false);//メニュー画面非表示
       this.image_save.setVisible(true);//SAVE画面表示
       this.image_item.setVisible(false);//ITEM画面非表示
       this.image_place.setVisible(false);//PLACE画面非表示
@@ -242,6 +248,7 @@ class MyGame extends Phaser.Scene
   {
     if(this.movemene_stop==5)
     {
+      this.image_mene2.setVisible(false);//メニュー画面非表示
       this.image_place.setVisible(true);//PLACE画面表示
       this.image_save.setVisible(false);//SAVE画面非表示
       this.image_item.setVisible(false);//ITEM画面非表示
@@ -251,6 +258,7 @@ class MyGame extends Phaser.Scene
   {
     if(this.movemene_stop==2)
     {
+      this.image_mene2.setVisible(true);
       this.image_place.setVisible(false);
       this.image_save.setVisible(false);
       this.image_item.setVisible(false);
@@ -340,6 +348,7 @@ class MyGame extends Phaser.Scene
         this.image_save.setVisible(false);//SAVE画面表示
         this.image_item.setVisible(false);//ITEM画面非表示
         this.image_place.setVisible(false);//PLACE画面非表示
+        this.image_mene2.setVisible(false);//PLACE画面非表示
       }   
       
 
