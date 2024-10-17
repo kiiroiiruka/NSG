@@ -218,7 +218,7 @@ class MyGame extends Phaser.Scene
       this.add.image(150, 200, 'char1').setVisible(false),
     ];
     //セリフの見出し
-    this.image_serihu=this.add.image(0, 1000, 'serihu').setVisible(false);//セリフの見出し
+    this.image_serihu=this.add.image(0, 1000, 'serihu').setVisible(false);
     //一会話文のセリフの文章 
     const text = 
     [
