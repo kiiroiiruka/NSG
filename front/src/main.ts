@@ -234,7 +234,7 @@ class MyGame extends Phaser.Scene
       this.image_item.setVisible(false);//ITEM画面非表示
     }
   }
-  MENE()//メニュー画面表示
+  MENE()
   {
     if(this.movemene_stop==2)
     {
@@ -253,6 +253,7 @@ class MyGame extends Phaser.Scene
     {
       this.movemene_stop=0;
       this.button_move_right.setVisible(true);
+      this.button_move_left.setVisible(true);
       this.button_move_up.setVisible(true);
       this.button_move_down.setVisible(true);
       this.button_move_check.setVisible(true);
@@ -316,6 +317,8 @@ class MyGame extends Phaser.Scene
         this.image_place.setVisible(false);//PLACE画面非表示
         this.image_mene2.setVisible(false);//PLACE画面非表示
       }   
+      
+
   }
 
   update()//
@@ -328,10 +331,8 @@ class MyGame extends Phaser.Scene
     if (this.moveUp) offsetY = 2;  // 上ボタン
     if (this.moveDown) offsetY = -2;  // 下ボタン
     // マップを移動させる
-    if (this.map) this.map.moveTiles(offsetX, offsetY);//offsetXとoffsetYに合わせてマップの位置移動
-    this.mene_change();//メニュー画面表示する
-
-    
+    if (this.map) this.map.moveTiles(offsetX, offsetY);
+    this.mene_change();//メニュー画面表示
     //セリフ表示プログラム↓
     this.char_text.draw_text();//画面にテキスト表示
     if(this.check_on)
@@ -342,8 +343,6 @@ class MyGame extends Phaser.Scene
         if(this.char_text.serihuend)this.check_serihu=true;
     }
     //セリフ表示プログラム↑   
-
-
   }
 }
 // ゲーム設定と初期化
