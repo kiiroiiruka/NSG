@@ -1,135 +1,12 @@
 import Phaser, { GameObjects } from 'phaser';
 let hiritu=0.7;
 // マップクラスを定義
-
-class Map 
-{
-  private tiles: Phaser.GameObjects.Image[][];  // tilesプロパティを宣言
-  constructor(scene: Phaser.Scene, tileTexture: string, mapWidth: number, mapHeight: number, tileSize: number) 
-  {
-    this.tiles = [];  // tiles配列を初期化
-    for (let x = 0; x < mapWidth; x++)
-    {
-      this.tiles[x] = [];
-      for (let y = 0; y < mapHeight; y++) 
-      {
-        const tileX = x * tileSize + tileSize / 2;
-        const tileY = y * tileSize + tileSize / 2;
-        this.tiles[x][y] = scene.add.image(tileX, tileY, tileTexture);
-      }
-    }
-  }
-
-  // 全タイルの位置を動かす
-  moveTiles(offsetX: number, offsetY: number) 
-  {
-    for (let x = 0; x < this.tiles.length; x++) 
-    {
-      for (let y = 0; y < this.tiles[x].length; y++) 
-      {
-        const tile = this.tiles[x][y];
-        if (tile) 
-        {
-          tile.x += offsetX;
-          tile.y += offsetY;
-        }
-      }
-    }
-  }
-}
-class Char_text 
-{
-  private text: string[]; // セリフが入る
-  private char_face: Phaser.GameObjects.Image[]; // キャラクターの表情
-  private lengths: number[];
-  private image_serihu!:Phaser.GameObjects.Image; //セリフのみだし
-
-  private text_go: string = ''; // 表示される文章
-
-  private speed: number = 0; // 一文字の表示スピード
-  private text_count: number = 0; // 今何文字目を表示しているか
-  private dannraku: number = 0; // 段落情報が入る
-
-  private scene: Phaser.Scene; // シーンのインスタンスを保持
-  private text_go2!:Phaser.GameObjects.Text;//表示テキスト入れるやつ(テキストの表示非表示変更できるようにするために必要)
-  private next:Boolean=false;//次のテキストいくか行かないかの判断
-  private start:Boolean=false;
-  public serihuend:Boolean=false;
-
-  constructor(scene: Phaser.Scene, text: string[], character: Phaser.GameObjects.Image[],midasi:Phaser.GameObjects.Image) 
-  {
-    this.scene = scene; // シーンを保持
-    this.text = text; // 会話を保存
-    this.char_face = character; // 表情を保存
-    this.lengths = text.map(t => t.length); // 各セリフの文字数を計算
-    this.image_serihu=midasi;//見出しセット
-  }
-  public displayText()
-  {
-
-    if(!this.start)this.char_face[0].setVisible(true);//次のキャラクター画像表示
-    if(!this.start)this.start=true;
-    
-  }
-  draw_text() 
-  { 
-    if(this.start)
-    {
-    if(this.text[this.dannraku]!='end')
-    {
-      this.image_serihu.setVisible(true);
-        if (this.speed < 1)this.speed += 1; // 一文字を出す時間間隔をカウント
-        else 
-        {
-        
-        if(this.text_count!=this.lengths[this.dannraku])
-        {
-          this.next=false;//次の段落いくやつリセット
-          this.speed = 0; // 時間間隔をリセット
-          this.text_go += this.text[this.dannraku][this.text_count]; // 表示する文字を追加
-          if(this.text_count!=0)this.text_go2.destroy();
-          this.text_count += 1; // 次の文字に進む
-          this.draw(this.text_go.padEnd(10)); // 画面に文字を表示
-        }
-      }
-      if(this.text_count==this.lengths[this.dannraku]&&this.next)
-      {
-        this.char_face[this.dannraku].setVisible(false);//一セリフ終えたらキャラクター画像消す
-        this.dannraku+=1;//次の会話段落へ移動
-        this.char_face[this.dannraku].setVisible(true);//次のキャラクター画像表示
-        this.text_go2.destroy();//画面に表示させたテキスト消す
-        this.text_go='';//次の段落に行く前にリセット
-        this.text_count = 0;//文字数カウントリセット
-      }
-   }
-   else  
-   {
-    this.char_face[this.dannraku].setVisible(false);
-    this.image_serihu.setVisible(false);
-    this.serihuend=true;
-   }   
-  }
-  }
-  next_go()
-  {
-    this.next=true;
-  }
-  draw(text_draw: string) 
-  {    
-    this.text_go2=this.scene.add.text(0, 330, text_draw, 
-    { 
-      fontSize: '32px', 
-      color: '#fff', 
-      fontFamily: 'Arial', // フォント指定
-    }).setOrigin(0, 0); // テキストを画面中央に表示
-  }
-
-}
+import { Map } from './MAP.ts';//map.tsファイルからMapクラスを持ってくる
+import { Char_text } from './CAHR_TEXT.ts';//map.tsファイルからMapクラスを持ってくる
 // メインゲームクラス
 class MyGame extends Phaser.Scene 
 {
   private char_text!: Char_text; // Char_textクラスのインスタンスを保持する変数
-
   private map!: Map;  // mapプロパティを宣言
   private isPointerDown: boolean = false; // ポインターが押されているかどうか
   private moveLeft: boolean = false; // 左移動フラグ
@@ -153,7 +30,6 @@ class MyGame extends Phaser.Scene
   private image_mene2!:Phaser.GameObjects.Image; 
   private image_serihu!:Phaser.GameObjects.Image; 
 
-
   private button_move_up!:Phaser.GameObjects.Graphics;//UPボタン入ったやつ
   private button_move_down!:Phaser.GameObjects.Graphics;//DOWNボタン入ったやつ
   private button_move_right!:Phaser.GameObjects.Graphics;//RIGHTボタン入ったやつ
@@ -165,19 +41,15 @@ class MyGame extends Phaser.Scene
   private button_move_BACK!:Phaser.GameObjects.Graphics;//ゲームに戻るボタン入ったやつ
   private button_move_check!:Phaser.GameObjects.Graphics;//チェックボタン
 
-
   private button_text: { [key: string]: Phaser.GameObjects.Text } = {};//移動ボタンテキスト
   private stop_make_button_text:integer=1;//ボタンテキスト表示ストッパー
-
   constructor() 
   {
     super({ key: 'main' });
   }
-
   preload() 
   {
     // 画像をロード
-    
     this.load.image('Replacement_tiles', 'src/assets/Replacement_tiles.png'); // タイルの画像のパスを指定
     this.load.image('player', 'src/assets/p5.png'); // p5.pngの画像のパスを指定
     this.load.image('mene', 'src/assets/mene.png');
@@ -199,15 +71,13 @@ class MyGame extends Phaser.Scene
     this.image_save=this.add.image(0, 0, 'save'); 
     this.image_place=this.add.image(0, 0, 'place'); 
     this.image_mene2=this.add.image(0, 0, 'mene2'); 
-
     this.button_move_mene=this.createButton(700, 400, 'メニュー',150,50, () => 
     {
         if(this.check_serihu)this.movemene = true;//会話中は反応しないようにする 
     }, 
     () => {this.movemene = false; });//メニューボタン作成
-    
-    //character会話↓ーーーーーーーーーーーーーーーーーーーーーーー
 
+    //character会話↓ーーーーーーーーーーーーーーーーーーーーーーー
     //一セリフごとのキャラクターの表示させるイラスト
     const charImages = 
     [
@@ -232,18 +102,9 @@ class MyGame extends Phaser.Scene
     this.char_text = new Char_text(this, text, charImages,this.image_serihu); // newでインスタンス化
    
     //character会話↑ーーーーーーーーーーーーーーーーーーーーーーー
-
     // マウスやタッチ入力の設定
-    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => 
-    {
-      this.isPointerDown = true; // ポインターが押されたことを記録
-    });
-
-    this.input.on('pointerup', () => 
-    {
-      this.isPointerDown = false; // ポインターが離されたことを記録
-    });
-
+    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {this.isPointerDown = true; });// ポインターが押されたことを記録
+    this.input.on('pointerup', () => {this.isPointerDown = false;}); // ポインターが離されたことを記録
     // ボタンを作成
     this.button_move_left=this.createButton(700, 225, '←',50,50, () => { this.moveLeft = true; }, () => { this.moveLeft = false; });
     this.button_move_right=this.createButton(800, 225, '→',50,50, () => { this.moveRight = true; }, () => { this.moveRight = false; });
@@ -373,7 +234,7 @@ class MyGame extends Phaser.Scene
       this.image_item.setVisible(false);//ITEM画面非表示
     }
   }
-  MENE()
+  MENE()//メニュー画面表示
   {
     if(this.movemene_stop==2)
     {
@@ -392,7 +253,6 @@ class MyGame extends Phaser.Scene
     {
       this.movemene_stop=0;
       this.button_move_right.setVisible(true);
-      this.button_move_left.setVisible(true);
       this.button_move_up.setVisible(true);
       this.button_move_down.setVisible(true);
       this.button_move_check.setVisible(true);
@@ -456,11 +316,9 @@ class MyGame extends Phaser.Scene
         this.image_place.setVisible(false);//PLACE画面非表示
         this.image_mene2.setVisible(false);//PLACE画面非表示
       }   
-      
-
   }
 
-  update() 
+  update()//
   {
     let offsetX = 0;
     let offsetY = 0;
@@ -470,12 +328,11 @@ class MyGame extends Phaser.Scene
     if (this.moveUp) offsetY = 2;  // 上ボタン
     if (this.moveDown) offsetY = -2;  // 下ボタン
     // マップを移動させる
-  
-    if (this.map) this.map.moveTiles(offsetX, offsetY);
-    this.mene_change();//メニュー画面表示
+    if (this.map) this.map.moveTiles(offsetX, offsetY);//offsetXとoffsetYに合わせてマップの位置移動
+    this.mene_change();//メニュー画面表示する
 
-
-//セリフ表示プログラム↓
+    
+    //セリフ表示プログラム↓
     this.char_text.draw_text();//画面にテキスト表示
     if(this.check_on)
     {   
@@ -484,7 +341,9 @@ class MyGame extends Phaser.Scene
         this.char_text.next_go();//画面にテキスト表示
         if(this.char_text.serihuend)this.check_serihu=true;
     }
-//セリフ表示プログラム↑   
+    //セリフ表示プログラム↑   
+
+
   }
 }
 // ゲーム設定と初期化
