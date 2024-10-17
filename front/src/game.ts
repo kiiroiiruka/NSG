@@ -1,30 +1,38 @@
-import Phaser from 'phaser';
+import Phaser, { GameObjects } from 'phaser';
+// マップクラスを定義
+import {Map} from './map.ts';//map.tsファイルからMapクラスを持ってくる
+import {Pause} from './pause.ts';//map.tsファイルからMapクラスを持ってくる
+import {Story} from './story.ts';//map.tsファイルからMapクラスを持ってくる
+import {Player} from './player.ts';//map.tsファイルからMapクラスを持ってくる
+import {Character} from './character.ts';//map.tsファイルからMapクラスを持ってくる
+import {Monster} from './monster.ts';//map.tsファイルからMapクラスを持ってくる
+// メインゲームクラス+
+export class Game extends Phaser.Scene 
+{
+  private age:number;
+  constructor();
+  constructor(age: number);
 
-class MyGame extends Phaser.Scene {
-  constructor() {
-    super({ key: 'main' });
+  // 実装
+  constructor(age?: number) {
+    super({ key: 'Game' , active: false});
+    this.age = age !== undefined ? age : 0;
   }
+  preload() 
+  {
+    // 画像をロード
 
-  preload() {
-    // アセットは何もロードしないので、ここは空
   }
+  create() 
+  {
+    // マップを生成
 
-  create() {
-    // テキストを指定した位置に表示
-    this.add.text(200, 250, 'Hello, Phaser!', {
-      font: '48px Arial',
-      color: '#ffffff',
-      fontStyle: 'bold',
-    });
+  }
+  update()//
+  {
+  
   }
 }
+// ゲーム設定と初期化
 
-const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
-  width: 800,
-  height: 600,
-  scene: MyGame,
-  backgroundColor: '#000000', // 黒い背景
-};
-
-new Phaser.Game(config);
+// ゲーム開始
