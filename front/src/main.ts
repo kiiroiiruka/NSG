@@ -190,33 +190,23 @@ class MyGame extends Phaser.Scene
   }
   create() 
   {
-
-
-    // Char_textクラスのインスタンスを作成
-
-
-    // インスタンスのメソッドを呼び出す
-   
-
-
     // マップを生成
-    
     this.map = new Map(this, 'Replacement_tiles', 8, 6, 100);  // マップサイズを設定 (8x6 のマップ)
     // p5.pngを中央に表示
     this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'player');  
     this.image_mene=this.add.image(0, 0, 'mene'); //menu追加
- 
     this.image_item=this.add.image(0, 0, 'item'); //item追加
     this.image_save=this.add.image(0, 0, 'save'); 
     this.image_place=this.add.image(0, 0, 'place'); 
     this.image_mene2=this.add.image(0, 0, 'mene2'); 
 
-
     this.button_move_mene=this.createButton(700, 400, 'メニュー',150,50, () => 
-      {
+    {
         if(this.check_serihu)this.movemene = true;//会話中は反応しないようにする 
-      }, () => {this.movemene = false; });//メニューボタン作成
-    //character会話↓
+    }, 
+    () => {this.movemene = false; });//メニューボタン作成
+    
+    //character会話↓ーーーーーーーーーーーーーーーーーーーーーーー
 
     //一セリフごとのキャラクターの表示させるイラスト
     const charImages = 
@@ -231,7 +221,8 @@ class MyGame extends Phaser.Scene
     const text = ['このゲームでテストプレイ','うまく動けばベスト','end'];
     //インスタンス作成
     this.char_text = new Char_text(this, text, charImages,this.image_serihu); // newでインスタンス化
-    //character会話↑
+   
+    //character会話↑ーーーーーーーーーーーーーーーーーーーーーーー
 
     // マウスやタッチ入力の設定
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => 
@@ -263,28 +254,18 @@ class MyGame extends Phaser.Scene
     this.button_move_BACK.setVisible(false);
     this.button_text["ゲームに戻る"].destroy();
   }
-
-
-  //itemButton.setVisible(!itemButton.visible);
-
-
-  // ボタンを作成するヘルパーメソッド
 // ボタンを作成するヘルパーメソッド
   createButton(x: number, y: number, label: string,sizex:integer,sizey:integer, onPress: () => void, onRelease: () => void) 
   {
-
     const buttonSizex = sizex; // ボタンのサイズを設定
     const buttonSizey = sizey; // ボタンのサイズを設定
     const buttonGraphics = this.add.graphics(); // Graphicsオブジェクトを作成
-
     // ボタンの背景を描画
     buttonGraphics.fillStyle(0x555555, 1); // 背景色
     buttonGraphics.fillRect(x, y, buttonSizex, buttonSizey); // 背景を描画
-
     // ボタンの枠を描画
     buttonGraphics.lineStyle(2, 0xffffff, 1); // 枠のスタイルを設定
     buttonGraphics.strokeRect(x, y, buttonSizex, buttonSizey); // 枠を描画
-
     // テキストを作成
     this.button_text[label] = this.add.text(x + buttonSizex / 2, y + buttonSizey / 2, label, 
     { 
@@ -450,26 +431,11 @@ class MyGame extends Phaser.Scene
         this.button_text["←"].destroy();
         this.button_text["→"].destroy();
       }
-      if(this.movemene)
-      {
-        this.movemene_stop=2;//メニュー開き終わる
-      }
-      if(this.moveITEM)
-      {
-          this.movemene_stop=1;//メニュー開き終わる
-      }
-      if(this.moveBACK)
-      {
-        this.movemene_stop=3;//メニュー閉じ終わる
-      }
-      if(this.moveSAVE)
-      {
-        this.movemene_stop=4;//メニュー開き終わる
-      }
-      if(this.movePLACE)
-      {
-        this.movemene_stop=5;//メニュー開き終わる
-      }
+      if(this.movemene)this.movemene_stop=2;//メニュー開き終わる
+      if(this.moveITEM)this.movemene_stop=1;//メニュー開き終わる
+      if(this.moveBACK)this.movemene_stop=3;//メニュー閉じ終わる
+      if(this.moveSAVE)this.movemene_stop=4;//メニュー開き終わる
+      if(this.movePLACE)this.movemene_stop=5;//メニュー開き終わる
       this.MENE();//メニュー画面表示
       this.ITEM();//アイテム欄表示
       this.SAVE();//セーブ画面表示
@@ -511,12 +477,7 @@ class MyGame extends Phaser.Scene
     }
 //セリフ表示プログラム↑   
   }
-
-
-
 }
-
-
 // ゲーム設定と初期化
 const config: Phaser.Types.Core.GameConfig = 
 {
