@@ -37,10 +37,99 @@ class Map
     }
   }
 }
+class Char_text 
+{
+  private text: string[]; // セリフが入る
+  private char_face: Phaser.GameObjects.Image[]; // キャラクターの表情
+  private lengths: number[];
+  private image_serihu!:Phaser.GameObjects.Image; //セリフのみだし
 
+  private text_go: string = ''; // 表示される文章
+
+  private speed: number = 0; // 一文字の表示スピード
+  private text_count: number = 0; // 今何文字目を表示しているか
+  private dannraku: number = 0; // 段落情報が入る
+
+  private scene: Phaser.Scene; // シーンのインスタンスを保持
+  private text_go2!:Phaser.GameObjects.Text;//表示テキスト入れるやつ(テキストの表示非表示変更できるようにするために必要)
+  private next:Boolean=false;//次のテキストいくか行かないかの判断
+  private start:Boolean=false;
+  public serihuend:Boolean=false;
+
+  constructor(scene: Phaser.Scene, text: string[], character: Phaser.GameObjects.Image[],midasi:Phaser.GameObjects.Image) 
+  {
+    this.scene = scene; // シーンを保持
+    this.text = text; // 会話を保存
+    this.char_face = character; // 表情を保存
+    this.lengths = text.map(t => t.length); // 各セリフの文字数を計算
+    this.image_serihu=midasi;//見出しセット
+  }
+  public displayText()
+  {
+
+    if(!this.start)this.char_face[0].setVisible(true);//次のキャラクター画像表示
+    if(!this.start)this.start=true;
+    
+  }
+  draw_text() 
+  { 
+    if(this.start)
+    {
+    if(this.text[this.dannraku]!='end')
+    {
+      this.image_serihu.setVisible(true);
+        if (this.speed < 10)this.speed += 1; // 一文字を出す時間間隔をカウント
+        else 
+        {
+        
+        if(this.text_count!=this.lengths[this.dannraku])
+        {
+          this.next=false;//次の段落いくやつリセット
+          this.speed = 0; // 時間間隔をリセット
+          this.text_go += this.text[this.dannraku][this.text_count]; // 表示する文字を追加
+          if(this.text_count!=0)this.text_go2.destroy();
+          this.text_count += 1; // 次の文字に進む
+          this.draw(this.text_go.padEnd(10)); // 画面に文字を表示
+        }
+      }
+      if(this.text_count==this.lengths[this.dannraku]&&this.next)
+      {
+        this.char_face[this.dannraku].setVisible(false);//一セリフ終えたらキャラクター画像消す
+        this.dannraku+=1;//次の会話段落へ移動
+        this.char_face[this.dannraku].setVisible(true);//次のキャラクター画像表示
+        this.text_go2.destroy();//画面に表示させたテキスト消す
+        this.text_go='';//次の段落に行く前にリセット
+        this.text_count = 0;//文字数カウントリセット
+      }
+   }
+   else  
+   {
+    this.char_face[this.dannraku].setVisible(false);
+    this.image_serihu.setVisible(false);
+    this.serihuend=true;
+   }   
+  }
+  }
+  next_go()
+  {
+    this.next=true;
+  }
+  draw(text_draw: string) 
+  {    
+    this.text_go2=this.scene.add.text(0, 370, text_draw, 
+    { 
+      fontSize: '32px', 
+      color: '#fff', 
+      fontFamily: 'Arial', // フォント指定
+    }).setOrigin(0, 0.8); // テキストを画面中央に表示
+  }
+
+}
 // メインゲームクラス
 class MyGame extends Phaser.Scene 
 {
+  private char_text!: Char_text; // Char_textクラスのインスタンスを保持する変数
+
   private map!: Map;  // mapプロパティを宣言
   private isPointerDown: boolean = false; // ポインターが押されているかどうか
   private moveLeft: boolean = false; // 左移動フラグ
@@ -52,14 +141,17 @@ class MyGame extends Phaser.Scene
   private moveSAVE: boolean = false; //SAVE画面表示非表示
   private movePLACE: boolean = false; //PLACE画面表示非表示
   private moveBACK: boolean = false; //戻るボタン非表示
+  private check_on: boolean = false; //調べるボタンの
 
+  private check_serihu: boolean = true; //会話中メニューボタン表示されない
 
   private movemene_stop:integer=0;
   private image_mene!:Phaser.GameObjects.Image; // メニュー画面の画像
   private image_item!:Phaser.GameObjects.Image; // アイテム欄の画像
   private image_save!:Phaser.GameObjects.Image; // セーブ画面の表示
   private image_place!:Phaser.GameObjects.Image; // セーブ画面の表示
-  private image_mene2!:Phaser.GameObjects.Image; // セーブ画面の表示
+  private image_mene2!:Phaser.GameObjects.Image; 
+  private image_serihu!:Phaser.GameObjects.Image; 
 
 
   private button_move_up!:Phaser.GameObjects.Graphics;//UPボタン入ったやつ
@@ -71,6 +163,8 @@ class MyGame extends Phaser.Scene
   private button_move_SAVE!:Phaser.GameObjects.Graphics;//SAVEボタン入ったやつ
   private button_move_NOW_PLACE!:Phaser.GameObjects.Graphics;//現在地確認ボタン入ったやつ
   private button_move_BACK!:Phaser.GameObjects.Graphics;//ゲームに戻るボタン入ったやつ
+  private button_move_check!:Phaser.GameObjects.Graphics;//チェックボタン
+
 
   private button_text: { [key: string]: Phaser.GameObjects.Text } = {};//移動ボタンテキスト
   private stop_make_button_text:integer=1;//ボタンテキスト表示ストッパー
@@ -91,20 +185,54 @@ class MyGame extends Phaser.Scene
     this.load.image('save', 'src/assets/save.png');
     this.load.image('place', 'src/assets/place.jpg');
     this.load.image('mene2', 'src/assets/mene2.jpg');
+    this.load.image('char1', 'src/assets/char1.png');
+    this.load.image('serihu', 'src/assets/serihu.png');
   }
-
   create() 
   {
+
+
+    // Char_textクラスのインスタンスを作成
+
+
+    // インスタンスのメソッドを呼び出す
+   
+
+
     // マップを生成
     
     this.map = new Map(this, 'Replacement_tiles', 8, 6, 100);  // マップサイズを設定 (8x6 のマップ)
     // p5.pngを中央に表示
     this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'player');  
     this.image_mene=this.add.image(0, 0, 'mene'); //menu追加
+ 
     this.image_item=this.add.image(0, 0, 'item'); //item追加
     this.image_save=this.add.image(0, 0, 'save'); 
     this.image_place=this.add.image(0, 0, 'place'); 
     this.image_mene2=this.add.image(0, 0, 'mene2'); 
+
+
+    this.button_move_mene=this.createButton(700, 400, 'メニュー',150,50, () => 
+      {
+        if(this.check_serihu)this.movemene = true;//会話中は反応しないようにする 
+      }, () => {this.movemene = false; });//メニューボタン作成
+    //character会話↓
+
+    //一セリフごとのキャラクターの表示させるイラスト
+    const charImages = 
+    [
+      this.add.image(150, 200, 'char1').setVisible(false),
+      this.add.image(150, 200, 'char1').setVisible(false),
+      this.add.image(150, 200, 'char1').setVisible(false)
+    ];
+    //セリフの見出し
+    this.image_serihu=this.add.image(0, 1000, 'serihu').setVisible(false);//セリフの見出し
+    //一会話文のセリフの文章 
+    const text = ['このゲームでテストプレイ','うまく動けばベスト','end'];
+    //インスタンス作成
+    this.char_text = new Char_text(this, text, charImages,this.image_serihu); // newでインスタンス化
+    //character会話↑
+
     // マウスやタッチ入力の設定
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => 
     {
@@ -121,7 +249,7 @@ class MyGame extends Phaser.Scene
     this.button_move_right=this.createButton(800, 225, '→',50,50, () => { this.moveRight = true; }, () => { this.moveRight = false; });
     this.button_move_up=this.createButton(750, 175, '↑',50,50, () => { this.moveUp = true; }, () => { this.moveUp = false; });
     this.button_move_down=this.createButton(750, 275, '↓',50,50, () => { this.moveDown = true; }, () => { this.moveDown = false; });
-    this.button_move_mene=this.createButton(700, 400, 'メニュー',150,50, () => {this.movemene = true; }, () => {this.movemene = false; });
+    this.button_move_check=this.createButton(750, 225, '',50,50, () => {this.check_on = true; }, () => {this.check_on = false; });
     this.button_move_ITEM=this.createButton(700, 100, 'ITEM',150,50, () => {this.moveITEM = true; }, () => {this.moveITEM = false; });
     this.button_move_ITEM.setVisible(false);
     this.button_text["ITEM"].destroy();
@@ -162,7 +290,7 @@ class MyGame extends Phaser.Scene
     { 
         fontSize: '32px', 
         color: '#fff', 
-        align: 'center' 
+        fontFamily: 'Arial', // フォント指定
     })
     .setOrigin(0.5); // テキストの位置を中央に設定
     // ボタンをインタラクティブに設定
@@ -211,7 +339,7 @@ class MyGame extends Phaser.Scene
     { 
           fontSize: fontsize, 
           color: '#fff', 
-          align: 'center' 
+          fontFamily: 'Arial', // フォント指定
     })
       .setOrigin(0.5); // テキストの位置を中央に設定
   }
@@ -232,6 +360,7 @@ class MyGame extends Phaser.Scene
       this.image_item.setVisible(true);//ITEM画面表示
       this.image_save.setVisible(false);//SAVE画面非表示
       this.image_place.setVisible(false);//PLACE画面非表示
+      
     }
   }
   SAVE()//セーブ画面
@@ -276,6 +405,7 @@ class MyGame extends Phaser.Scene
       this.button_move_left.setVisible(true);
       this.button_move_up.setVisible(true);
       this.button_move_down.setVisible(true);
+      this.button_move_check.setVisible(true);
       this.button_move_ITEM.setVisible(false);//ITEMボタン非表示
       this.button_move_SAVE.setVisible(false);//SAVEボタン非表示
       this.button_move_BACK.setVisible(false);//PLACEボタン表示
@@ -301,6 +431,7 @@ class MyGame extends Phaser.Scene
         this.button_move_left.setVisible(false);
         this.button_move_up.setVisible(false);
         this.button_move_down.setVisible(false);
+        this.button_move_check.setVisible(false);
         this.button_move_ITEM.setVisible(true);//ITEMボタン表示
         this.button_move_SAVE.setVisible(true);//SAVEボタン表示
         this.button_move_NOW_PLACE.setVisible(true);//PLACEボタン表示
@@ -368,7 +499,17 @@ class MyGame extends Phaser.Scene
     if (this.map) this.map.moveTiles(offsetX, offsetY);
     this.mene_change();//メニュー画面表示
 
-    
+
+//セリフ表示プログラム↓
+    this.char_text.draw_text();//画面にテキスト表示
+    if(this.check_on)
+    {   
+        this.check_serihu=false;//メニューボタン押せないようにする
+        this.char_text.displayText();//テキスト表示開始
+        this.char_text.next_go();//画面にテキスト表示
+        if(this.char_text.serihuend)this.check_serihu=true;
+    }
+//セリフ表示プログラム↑   
   }
 
 
