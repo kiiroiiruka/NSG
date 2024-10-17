@@ -78,7 +78,7 @@ class Char_text
     if(this.text[this.dannraku]!='end')
     {
       this.image_serihu.setVisible(true);
-        if (this.speed < 10)this.speed += 1; // 一文字を出す時間間隔をカウント
+        if (this.speed < 1)this.speed += 1; // 一文字を出す時間間隔をカウント
         else 
         {
         
@@ -116,12 +116,12 @@ class Char_text
   }
   draw(text_draw: string) 
   {    
-    this.text_go2=this.scene.add.text(0, 370, text_draw, 
+    this.text_go2=this.scene.add.text(0, 330, text_draw, 
     { 
       fontSize: '32px', 
       color: '#fff', 
       fontFamily: 'Arial', // フォント指定
-    }).setOrigin(0, 0.8); // テキストを画面中央に表示
+    }).setOrigin(0, 0); // テキストを画面中央に表示
   }
 
 }
@@ -213,12 +213,21 @@ class MyGame extends Phaser.Scene
     [
       this.add.image(150, 200, 'char1').setVisible(false),
       this.add.image(150, 200, 'char1').setVisible(false),
-      this.add.image(150, 200, 'char1').setVisible(false)
+      this.add.image(150, 200, 'char1').setVisible(false),
+      this.add.image(150, 200, 'char1').setVisible(false),
+      this.add.image(150, 200, 'char1').setVisible(false),
     ];
     //セリフの見出し
     this.image_serihu=this.add.image(0, 1000, 'serihu').setVisible(false);//セリフの見出し
     //一会話文のセリフの文章 
-    const text = ['このゲームでテストプレイ','うまく動けばベスト','end'];
+    const text = 
+    [
+      '[しゃべってる人物の名前]:\n[ゲームプレイヤーの皆さん今テストプレイでテキスト表示し]\n[てます。このテストプレイに成功したらタイプスクリプト最]\n[高やっぱ高級言語が一番だわマジで低級言語と違って書きや]',
+      '[しゃべってる人物の名前]:\n[ゲームプレイヤーの皆さん今テストプレイ２かいめですーー]\n[てます。このテストプレイに成功したらタイプスクリプト最]\n[高やっぱ高級言語が一番だわマジで低級言語と違って書きや]',
+      '[しゃべってる人物の名前]:\n[PythonPythonPythonPythonPythonPythonPythonPythonああ]\n[てます。このテストプレイに成功したらタイプスクリプト最]\n[高やっぱ高級言語が一番だわマジで低級言語と違って書きや]',
+      '[しゃべってる人物の名前]:\n[ｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓｓ]\n[てます。このテストプレイに成功したらタイプスクリプト最]\n[高やっぱ高級言語が一番だわマジで低級言語と違って書きや]',
+      'end'
+    ];
     //インスタンス作成
     this.char_text = new Char_text(this, text, charImages,this.image_serihu); // newでインスタンス化
    
