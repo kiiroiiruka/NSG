@@ -13,6 +13,7 @@
             battle
             talk
         player
+        programmer
         character
         monster
 

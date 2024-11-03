@@ -7,7 +7,7 @@ export class Story
   preload() 
   {
     // 画像をロード
-
+    
   }
   create() 
   {

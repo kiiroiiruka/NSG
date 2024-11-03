@@ -1,3 +1,4 @@
+import Phaser, { GameObjects } from 'phaser';
 export class Char_text 
 {
   private text: string[]; // セリフが入る
