@@ -1,0 +1,74 @@
+/*
+cssファイルで「タグ名{設定}」と書くと
+HTMLファイルでそのタグを活用したときの表示結果などの設定が可能
+(例)
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+さらにcssファイルで「タグ名1　タグ名2{設定}」と書くと
+HTMLファイルでそのタグ1内で2を活用したときの表示結果などの設定が可能
+(例)
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+navタグ内でulタグを活用したときの設定
+
+
+*/
+
+body 
+{
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+header 
+{
+    background-color: #033f30;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+nav ul 
+{
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li 
+{
+    display: inline;
+    margin-right: 10px;
+}
+
+
+nav ul li a 
+{
+    font-size: 24px; /* 大きなテキストサイズ */
+    color: #333;
+    text-decoration: none;
+}
+
+
+
+
+footer 
+{
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

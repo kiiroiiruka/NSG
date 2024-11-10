@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phaser.js Simple Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.86.0/dist/phaser.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <!--
+    プログラムを複数起動させたい場合はscriptタグを以下のように複数活用すればいい、
+    プログラムファイルを呼び出すこともできるし、直接起動させたいプログラムコードを書いてもいい
+    -->
+    <script type="module">
+    import { Home } from '/front/game/home.js';//使うプログラムファイル用意する(extends Phaser.Sceneがついたクラスのみ)
+    import { Story } from '/front/game/story.js';//使うプログラムファイル用意する(extends Phaser.Sceneがついたクラスのみ)
+    import { Talk } from '/front/game/talk.js';//使うプログラムファイル用意する(extends Phaser.Sceneがついたクラスのみ)
+    import { Map_draw } from '/front/game/map_draw.js';//使うプログラムファイル用意する(extends Phaser.Sceneがついたクラスのみ)
+    const config = 
+    {
+        type: Phaser.AUTO,
+        scale: 
+        {
+            mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            width: 700,
+            height: 490,
+            min: 
+            {
+                width: 350,
+                height: 245
+            },
+            max: 
+            {
+                width: 1400,
+                height: 980
+            },
+
+        },
+        physics://「physics:」というのは重力活用する時に必要 
+        {
+            default: 'arcade',
+            arcade: 
+            {
+                gravity: { y: 0 }, // 重力は0に設定（上から下に落ちないように）
+                debug: false
+            }
+        },
+        scene: [Home,Story,Talk, Map_draw]//使うプログラムファイル内にあるクラス(extends Phaser.Sceneがついたクラスのみ)
+    };
+    const game = new Phaser.Game(config);//今回作るゲームはgameに入る(ゲームobject作成)
+    </script>
+   
+</body>
+</html>

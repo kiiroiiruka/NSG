@@ -1,0 +1,82 @@
+<!DOCTYPE html> <!-- HTML5文書であることを宣言 -->
+<html lang="ja"> <!-- HTML文書の開始。言語を日本語に設定 -->
+<head> <!-- ヘッダー部分の開始。おおまかなホームページ情報などを表示 -->
+
+<!--
+    metaは扱う文字データや表示サイズの設定するときに使う
+　　ーーーーー
+    meta charsetで文字データ設定
+    meta name="viewport"で表示領域設定　content="width=device-width, initial-scale=1.0"
+　　ーーーーー
+　　content="××"で表示領域に関する設定が可能
+　  ↓××の所に当てはめるものの例↓
+
+    width: 表示領域の幅を設定
+    例: width=device-width（デバイスの画面幅に合わせる）
+
+    initial-scale: 初期のズーム倍率を設定します。
+    例: initial-scale=1.0（等倍で表示）
+
+    user-scalable: ユーザーによるズームの可否を設定します。
+    例: user-scalable=yes（ズーム可能）またはno（ズーム不可）
+
+    minimum-scale/maximum-scale: ズームの最小/最大倍率を設定します。
+    例: minimum-scale=1.0, maximum-scale=2.0
+
+    viewport-fit: ノッチのあるディスプレイでの表示方法を設定します。
+    例: viewport-fit=cover（ノッチ部分まで表示を広げる）
+-->
+
+    <!-- UTF-8という文字データを使って表示させる -->
+    <meta charset="UTF-8">
+    <!--content="width=device-widthで画面サイズをデバイスに合わせる, initial-scale=1.0"はデバイスに合わせる前の初期サイズ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ブラウザのタブに表示されるタイトル -->
+    <title>私のウェブサイト</title> 
+
+     <!-- CSSファイルの読み込み。'/front/'はサーバーのルートからのパス -->
+    <link rel="stylesheet" href="/front/styles.css">
+
+</head> <!-- ヘッダー部分の終了 -->
+<body> <!-- 本文の開始 -->
+
+<!--
+    <header>: ページや特定セクションの導入部分を表します。
+    <nav>: ナビゲーションリンクのセクションを定義します。
+    <main>: ページの主要なコンテンツを含みます。
+    <article>: 独立して配布や再利用が可能な自己完結型のコンテンツを表します。
+    <section>: 文書の一般的なセクションを定義します。
+    <aside>: メインコンテンツに間接的に関連する内容を含みます。
+    <footer>: ページやセクションの末尾に位置する情報を含みます。
+    <figure>: 図表、画像、コードスニペットなどの自己完結型のコンテンツを表します。
+    <figcaption>: <figure>要素のキャプションを定義します。
+    <details>: 追加の詳細を表示・非表示できる開閉式のウィジェットを作成します。
+    <summary>: <details>要素の見出しを定義します。
+    <time>: 日付や時刻を表します。
+-->
+
+    <header> <!-- ヘッダーセクションの開始 -->
+        <h1>END OF CODE</h1> <!-- 最上位の見出し -->
+    </header> <!-- ヘッダーセクションの終了 -->
+    <p>このゲームは</p>
+    <nav> <!-- ナビゲーションセクションの開始 -->   
+        <a href="/front/set.html" style="position: absolute; top: 100px; left: 300px;"><!--移動先リンクと表示位置の設定-->   
+            <img src="/front/img/char1.png" alt="サンプル画像" style="width:100px; height:auto;">
+        </a>
+        <a href="/front/main.html" style="position: absolute; top: 100px; left: 700px;"><!--移動先リンクと表示位置の設定-->  
+            <img src="/front/img/char1.png" alt="サンプル画像" style="width:100px; height:auto;">
+            <!--
+            「/」付けずにパス書き始めるのが相対パス(例　front/img/char1.png)
+            「/」付けてからパス書き始めるのが絶対パス(例　/front/img/char1.png)
+            -->  
+        </a>
+        <a href="game/javascript_game.html">ここ押したらゲーム開始</a>
+        <!--移動先リンクと表示位置の設定-->   
+    </nav> <!-- ナビゲーションセクションの終了 -->
+    
+    <footer> <!-- フッターセクションの開始 -->
+        <p>&copy;GNP</p> <!-- 著作権表示 -->
+    </footer> <!-- フッターセクションの終了 -->
+</body> <!-- 本文の終了 -->
+</html> <!-- HTML文書の終了 -->
