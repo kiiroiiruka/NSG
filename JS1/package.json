@@ -1,0 +1,23 @@
+{
+  "name": "js1",
+  "version": "1.0.0",
+  "main": "index.js",
+
+  
+  "scripts": {
+    "start": "node go.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "phaser": "^3.86.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
