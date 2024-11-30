@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "module": "ESNext",  // または "module": "ES6"
+    "target": "ES6",     // または "ESNext"
     "useDefineForClassFields": true,
-    "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", // nodeモジュール解決方法を指定
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",

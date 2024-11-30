@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var admin = require("firebase-admin");
-var serviceAccount = require("./path/to/firebase-adminsdk.json");
+var serviceAccount = require("./gnpwebgame-firebase-adminsdk-tzwuu-d4936dee6d.json");
 // Firebase Admin SDKを初期化
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)

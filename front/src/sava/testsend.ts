@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import * as serviceAccount from './path/to/firebase-adminsdk.json';
+import * as serviceAccount from './gnpwebgame-firebase-adminsdk-tzwuu-d4936dee6d.json';
 
 
 // Firebase Admin SDKを初期化
